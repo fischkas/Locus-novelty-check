@@ -129,19 +129,19 @@ for (i in 1:nrow(snp_compare))
   
   # Get LD between SNP pair
   curr_snp_compare <- snp_compare[i,]
-  string1 <- paste0("plink2 --bfile ", g1000_bed, " --ld ", curr_snp_compare$SNP, " ", curr_snp_compare$Asthma_SNP)
-  string2 <- paste0(" --read-freq ", g1000_freq, " --out ", out_ld, curr_snp_compare$SNP, "_", curr_snp_compare$Asthma_SNP)
+  string1 <- paste0("plink2 --bfile ", g1000_bed, " --ld ", curr_snp_compare$SNP, " ", curr_snp_compare$Pheno_SNP)
+  string2 <- paste0(" --read-freq ", g1000_freq, " --out ", out_ld, curr_snp_compare$SNP, "_", curr_snp_compare$Pheno_SNP)
   get_ld <- paste0(string1, string2) 
   system(get_ld)
   
   # Extract r2 from the logfile
-  string3 <- paste0("grep r^2 ", out_ld, curr_snp_compare$SNP, "_", curr_snp_compare$Asthma_SNP)
-  string4 <- paste0(".log | sed -E 's/[[:space:]]+//g' | sed -E 's/D.*//g' | sed -E 's/^.*=//g' > ", out_ld, curr_snp_compare$SNP, "_", curr_snp_compare$Asthma_SNP, ".ld")
+  string3 <- paste0("grep r^2 ", out_ld, curr_snp_compare$SNP, "_", curr_snp_compare$Pheno_SNP)
+  string4 <- paste0(".log | sed -E 's/[[:space:]]+//g' | sed -E 's/D.*//g' | sed -E 's/^.*=//g' > ", out_ld, curr_snp_compare$SNP, "_", curr_snp_compare$Pheno_SNP, ".ld")
   grep_r2 <- paste0(string3, string4)
   system(grep_r2)
   
   # Insert extracted r2 in the file containing both SNPs
-  curr_snp_par <- paste0(out_ld, curr_snp_compare$SNP, "_", curr_snp_compare$Asthma_SNP, ".ld")
+  curr_snp_par <- paste0(out_ld, curr_snp_compare$SNP, "_", curr_snp_compare$Pheno_SNP, ".ld")
   cur_snp_r2 <- fread(curr_snp_par)
   curr_snp_compare %>% 
     mutate(R2 = cur_snp_r2$V1) -> curr_snp_compare_r2[[i]]
@@ -150,7 +150,7 @@ for (i in 1:nrow(snp_compare))
 
 # Save file for comparison (noevl SNPs should be in low LD) with known phenotype-associated SNPs
 bind_rows(curr_snp_compare_r2) %>% 
-  write.table(., "/home/kasper/nas/closed_projects/polyp_gwas/novelty_check/novelty_lookup_asthma.results.genes.rsid.final",
+  write.table(., "novelty_lookup_pheno.results.genes.rsid.final",
               col.names = T, row.names = F, quote = F, sep = "\t")
 
 
