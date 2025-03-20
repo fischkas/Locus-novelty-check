@@ -3,7 +3,7 @@ import pandas as pd
 
 # File paths
 keywords_file = "novelty_lookup_search_file.txt"
-pdf_file = "scientific_articles_daymonthyear.txt"
+pdf_file = "scientific_articles_yearmonthday.txt"
 output_file = "novelty_lookup_genes.results"
 
 # Step 1: Load keywords
