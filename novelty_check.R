@@ -42,8 +42,8 @@ genes_snp_window %>%
 
 
 ## Parse scientific articles for mentions of alternative gene names (the nearest gene should also be included)
-## The script novelty_check.py produces a file called 'novelty_lookup_genes.results' containing the genes, number of mentions (occurrences) and page number
-search_loci <- "python3 novelty_check.py"
+## The script parse_pdf.py produces a file called 'novelty_lookup_genes.results' containing the genes, number of mentions (occurrences) and page number
+search_loci <- "python3 parse_pdf.py"
 system(search_loci)
 
 ## Read in the results of the parsing of the scientific articles
